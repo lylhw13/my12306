@@ -249,14 +249,17 @@ class MyQuery:
 
         station_infos = []
 
+        colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w', '#7e1e9c','#00ffff']
+
         data = json.loads(result)['data']['data']
         if data:
-            for station_info in data:
+            for index,station_info in enumerate(data):
                 arrive_time_num = self.time2num(station_info['arrive_time'])
                 start_time_num = self.time2num(station_info['start_time'])
-                plt.scatter([arrive_time_num, start_time_num], [0.1]*2, marker='o')
-                plt.plot([arrive_time_num, start_time_num], [0.1]*2)
+                plt.scatter([arrive_time_num, start_time_num], [0.1]*2, marker='o', c=colors[index])
+                plt.plot([arrive_time_num, start_time_num], [0.1]*2, c=colors[index])
                 station_infos.append([station_info['station_name'], arrive_time_num, start_time_num])
+                plt.axvline(start_time_num, color=colors[index])
 
 
         for length in range(1, len(station_infos)):
@@ -264,7 +267,7 @@ class MyQuery:
                 if length + index < len(station_infos):
                     start_time_num = station_infos[index][2]
                     arrive_time_num = station_infos[index + length][1]
-                    plt.plot([arrive_time_num,start_time_num],[length + index * 0.1] * 2)
+                    plt.plot([arrive_time_num,start_time_num],[length + index * 0.1] * 2, c=colors[index])
         plt.show()
 
         '''
